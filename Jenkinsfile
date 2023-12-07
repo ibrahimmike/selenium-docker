@@ -20,13 +20,17 @@ pipeline{
     stage('Push image'){
     steps{
         echo "pushing docker image"
+        environment{
+         DOCKER_HUB = credentials('dockerhub-credentials')
+        }
+        sh 'docker login -u ${DOCKER_HUB_USR} -p ${DOCKER_HUB_PSW}'
          sh "docker push ibrahimshabana/selenium"
     }
     }
     }
     post{
        always{
-          echo "doing clean up"
+          sh "docker logout"
        }
     }
 }
